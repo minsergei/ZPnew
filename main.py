@@ -59,8 +59,11 @@ def sending_process():
 
 def delete_files():
     try:
-        shutil.rmtree('calculations/')
-        os.mkdir('calculations/')
+        if os.path.exists('calculations/'):
+            shutil.rmtree('calculations/')
+            os.mkdir('calculations/')
+        else:
+            os.mkdir('calculations/')
     except Exception as e:
         messagebox.showerror("Ошибка", f"Произошла ошибка: {e}")
 
