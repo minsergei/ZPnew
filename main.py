@@ -21,7 +21,7 @@ def select_file_with_employeers():
     # Открываем диалог выбора файла
     file_path2 = filedialog.askopenfilename(
         title="Выберите файл для обработки",
-        filetypes=(("Excel files", "*.xls"), ("All files", "*.*"))
+        filetypes=(("Excel files", "*.xlsx"), ("All files", "*.*"))
     )
     # Если файл выбран, записываем путь в поле ввода
     if file_path2:
