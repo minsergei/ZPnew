@@ -8,12 +8,12 @@ from dotenv import load_dotenv
 load_dotenv()
 # --- НАСТРОЙКИ ---
 # Путь к файлу со списком сотрудников (Табельный номер и почта)
-employees_file = 'employees.xlsx'
+# employees_file = 'employees.xlsx'
 # Папка, где лежат созданные файлы (имена файлов должны совпадать с "Табельным номером")
 folder_path = 'calculations/'
 # Название столбца в Excel, которое совпадает с названием файла
-id_column = 'ID'
-email_column = 'Email'
+# id_column = 'ID'
+# email_column = 'Email'
 
 # Настройки почты (SMTP)
 SMTP_SERVER = os.getenv("SMTP_SERVER")
@@ -22,10 +22,11 @@ SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
 
 # Загружаем данные сотрудников
-df_employees = pd.read_excel(employees_file)
+# df_employees = pd.read_excel(employees_file)
 
 
 def send_email(recipient_email, subject, body, attachment_path):
+
     msg = EmailMessage()
     msg['Subject'] = subject
     msg['From'] = SENDER_EMAIL
@@ -44,7 +45,18 @@ def send_email(recipient_email, subject, body, attachment_path):
 
 
 # Проходим по списку сотрудников
-def mail_for_employees():
+def mail_for_employees(path):
+
+    # Путь к файлу со списком сотрудников (Табельный номер и почта)
+    employees_file = path
+    print(employees_file)
+    # Название столбца в Excel, которое совпадает с названием файла
+    id_column = 'ID'
+    email_column = 'Email'
+    # Загружаем данные сотрудников
+    df_employees = pd.read_excel(employees_file)
+
+
     message_from_send_mail = []
     for index, row in df_employees.iterrows():
         employee_id = str(row[id_column])
@@ -58,8 +70,8 @@ def mail_for_employees():
             try:
                 send_email(
                     recipient,
-                    "Ваш отчет по ЗП",
-                    f"Здравствуйте! Во вложении ваш файл: {file_name}",
+                    "Расчетный лист",
+                    f"Здравствуйте!  Расчетный листок за истекший месяц: {file_name}",
                     full_path
                 )
                 message_from_send_mail.append(f"Отправлено: {file_name} для {recipient}")
